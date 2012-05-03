@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<InfrastructureModel name="SimpleTestModel">
+	<provider name="aws">
+		<\node name="headNode" template="awsStart" credentials="awsTobias">
+		<\node name="childNode1" template="awsStart" credentials="awsTobias">
+		<node name="loggingServer">
+		
+		</node>
+	</provider>
+
+	<provider name="1&1">
+
+	</provider>
+</InfrastructureModel>
