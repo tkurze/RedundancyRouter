@@ -7,6 +7,7 @@ import gt.redundancyrouter.dataService.resources.template.AbstractTemplate;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jclouds.compute.domain.NodeMetadata;
 
@@ -22,6 +23,7 @@ import org.jclouds.compute.domain.NodeMetadata;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 // @Extension(vendorName="datanucleus", key="mysql-engine-type", value="MyISAM")
 // //don't use innoDB, problem with keys longer than 767 bytes (255xUTF8)
+@XmlRootElement
 public abstract class CustomProvider extends AbstractProvider{
 
 	@Persistent

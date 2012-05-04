@@ -1,6 +1,7 @@
 package gt.redundancyrouter.dataService.resources.provider;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Provider APIs supported by jClouds:
@@ -20,6 +21,7 @@ import javax.xml.bind.JAXBException;
  * @author tobias
  * 
  */
+@XmlRootElement
 public class JCloudProvider extends AbstractProvider {
 
 	private final String jCloudProviderString;

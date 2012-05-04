@@ -75,25 +75,4 @@ public class PrivateKeyManager extends BasicManager<PrivateKey> {
 			e.printStackTrace();
 		}
 	}
-//
-//	@Override
-//	public void saveConfig(File f) {
-//		File configFile = new File(f, this.getName());
-//		StringBuffer buf = new StringBuffer();
-//		for (PrivateKey k : this.managededObjects.values()) {
-//			try {
-//				buf.append(k.serializeXML());
-//			} catch (JAXBException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		try {
-//			FileUtils.writeStringToFile(configFile,
-//					this.addRootTags(buf.toString()));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 }

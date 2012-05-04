@@ -1,10 +1,13 @@
 package gt.redundancyrouter.dataService.resources.template;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.domain.OsFamily;
 import org.jclouds.compute.domain.Template;
 import org.jclouds.compute.domain.TemplateBuilder;
 
+@XmlRootElement
 public class ComputeTemplate extends AbstractTemplate {
 
 	protected String imageId = null;

@@ -60,7 +60,7 @@ public class TemplateManager extends BasicManager<AbstractTemplate> {
 
 		JAXBContext jaxbContext = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(AbstractTemplate.class);
+			jaxbContext = JAXBContext.newInstance(ComputeTemplate.class);
 
 			for (String xml : childStrings) {
 				final AbstractTemplate templ = (AbstractTemplate) jaxbContext
