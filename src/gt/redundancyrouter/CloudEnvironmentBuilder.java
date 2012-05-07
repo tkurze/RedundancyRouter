@@ -1,18 +1,20 @@
 package gt.redundancyrouter;
 
 import gt.redundancyrouter.Configuration.ConfigurationManagerException;
-import gt.redundancyrouter.resources.NodeManager;
-import gt.redundancyrouter.resources.credentials.LoginCredentialsManager;
+import gt.redundancyrouter.management.NodeManager;
+import gt.redundancyrouter.management.ProviderManager;
+import gt.redundancyrouter.management.TemplateManager;
+import gt.redundancyrouter.management.credentials.LoginCredentialsManager;
+import gt.redundancyrouter.resources.Resource;
 import gt.redundancyrouter.resources.iaas.compute.ComputeNode;
 import gt.redundancyrouter.resources.provider.AbstractProvider;
-import gt.redundancyrouter.resources.provider.ProviderManager;
 import gt.redundancyrouter.resources.template.AbstractTemplate;
-import gt.redundancyrouter.resources.template.TemplateManager;
 import gt.redundancyrouter.utils.Delegate;
 import gt.redundancyrouter.utils.Runner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -22,12 +24,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 public class CloudEnvironmentBuilder {
+
+	private static Logger log = Logger.getLogger("CloudEnvironmentBuilder");
 
 	public static long DEFAULT_WAITING_TIME_MIN = 2;
 
@@ -40,6 +45,8 @@ public class CloudEnvironmentBuilder {
 		final List<String> providersInEnvironment = new LinkedList<String>();
 		final List<String> nodeTemplatesInEnvironment = new LinkedList<String>();
 		final List<String> credentialsInEnvironment = new LinkedList<String>();
+
+		log.info("parsing file: " + f.getAbsolutePath());
 
 		Document doc = parser.build(f);
 		final String name = doc.getRootElement().getAttribute("name")
@@ -58,6 +65,7 @@ public class CloudEnvironmentBuilder {
 		}
 
 		// check if the cloud environment specifications file is valid...
+		log.info("checking if file is valid...");
 		try {
 			if (!CloudEnvironmentBuilder.providerCheck(providersInEnvironment)) {
 				System.err.println("unknown provider(s) specified!");
@@ -94,6 +102,7 @@ public class CloudEnvironmentBuilder {
 			System.err.println(e.getMessage());
 			return;
 		}
+		log.info("file seems to be ok!");
 
 		// if we reched this point the configuration file is OK and all
 		// requested resources are available
@@ -145,8 +154,8 @@ public class CloudEnvironmentBuilder {
 	}
 
 	/**
-	 * Starts new nodes in parallel, to create the specified cloud environment. This
-	 * implementation uses threads organized in a thread pool!
+	 * Starts new nodes in parallel, to create the specified cloud environment.
+	 * This implementation uses threads organized in a thread pool!
 	 * 
 	 * @param nodes
 	 * @return
@@ -171,6 +180,7 @@ public class CloudEnvironmentBuilder {
 			}
 		};
 
+		log.info("staring nodes...");
 		final ExecutorService executor = Executors.newCachedThreadPool();
 		ExecutorCompletionService<ComputeNode> execComplService = new ExecutorCompletionService<ComputeNode>(
 				executor);
@@ -184,15 +194,19 @@ public class CloudEnvironmentBuilder {
 				computeNodesStarter.execute(execComplService,
 						pm.getManagedObject(providerName),
 						tm.getManagedObject(templateName));
+				log.info("starting node");
 			}
 
+			log.info("waiting for nodes to be started...");
 			List<ComputeNode> startedNodes = new LinkedList<ComputeNode>();
 			for (int i = 0; i < nodes.size(); i++) {
 				try {
 					Future<ComputeNode> task = execComplService.poll(
 							CloudEnvironmentBuilder.DEFAULT_WAITING_TIME_MIN,
 							TimeUnit.MINUTES);
-					startedNodes.add(task.get());
+					ComputeNode n = task.get();
+					startedNodes.add(n);
+					log.info("node " + n.getName() + " started!");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -201,6 +215,8 @@ public class CloudEnvironmentBuilder {
 					e.printStackTrace();
 				}
 			}
+			log.info("shutting down executor!");
+			executor.shutdown();
 			return startedNodes;
 		} catch (Exception e) {
 
@@ -210,28 +226,44 @@ public class CloudEnvironmentBuilder {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static boolean providerCheck(List<String> providers)
 			throws ConfigurationManagerException {
 		Configuration config = Configuration.getConfiguration();
 		ManagerFabric mf = ManagerFabric.getManagerFabric(config);
 		ProviderManager pm = mf.getProviderManager();
-		return pm.getManagedObjects().containsAll(providers);
+		return checkIfResourceNamesAreInCollection(
+				(Collection) pm.getManagedObjects(), providers);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static boolean nodeTemplateCheck(List<String> nodeTemplates)
 			throws ConfigurationManagerException {
 		Configuration config = Configuration.getConfiguration();
 		ManagerFabric mf = ManagerFabric.getManagerFabric(config);
 		TemplateManager tm = mf.getTemplateManager();
-		return tm.getManagedObjects().containsAll(nodeTemplates);
+		return checkIfResourceNamesAreInCollection(
+				(Collection) tm.getManagedObjects(), nodeTemplates);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static boolean credentialsCheck(List<String> credentials)
 			throws ConfigurationManagerException {
 		Configuration config = Configuration.getConfiguration();
 		ManagerFabric mf = ManagerFabric.getManagerFabric(config);
 		LoginCredentialsManager cm = mf.getLoginCredentialManager();
-		return cm.getManagedObjects().containsAll(credentials);
+		return checkIfResourceNamesAreInCollection(
+				(Collection) cm.getManagedObjects(), credentials);
+	}
+
+	protected static boolean checkIfResourceNamesAreInCollection(
+			Collection<Resource> c, List<String> l) {
+		List<String> resNames = new LinkedList<String>();
+		for (Resource r : c) {
+			resNames.add(r.getName());
+		}
+
+		return resNames.containsAll(l);
 	}
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources.credentials;
+package gt.redundancyrouter.management.credentials;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,9 @@ import org.jdom2.JDOMException;
 import gt.redundancyrouter.BasicManager;
 import gt.redundancyrouter.Configuration;
 import gt.redundancyrouter.Configuration.ConfigurationManagerException;
+import gt.redundancyrouter.resources.credentials.LoginCredentials;
+import gt.redundancyrouter.resources.credentials.LoginCredentialsPassword;
+import gt.redundancyrouter.resources.credentials.LoginCredentialsPrivateKey;
 import gt.redundancyrouter.ManagerFabric;
 
 public class LoginCredentialsManager extends BasicManager<LoginCredentials> {

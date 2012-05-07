@@ -211,7 +211,7 @@ public class ChefNodeManager extends BasicManager<Node> {
 					credentials = remoteCreds.getAbsolutePath();
 				}
 			}
-			// KnifeCOntroller with parameters: remote knife
+			// KnifeController with parameters: remote knife
 			else
 				knife = new KnifeController();
 

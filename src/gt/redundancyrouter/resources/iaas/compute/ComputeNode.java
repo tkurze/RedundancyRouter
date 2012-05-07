@@ -15,9 +15,12 @@ public class ComputeNode extends Node {
 		this.metadata = metadata;
 	}
 	
+	protected ComputeNode(){
+		super(null,null);
+	}
+	
 	protected NodeMetadata metadata;
 	
-	@XmlElement
 	public NodeMetadata getMetadata() {
 		return metadata;
 	}

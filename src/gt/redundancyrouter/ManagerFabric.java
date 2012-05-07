@@ -1,11 +1,11 @@
 package gt.redundancyrouter;
 
+import gt.redundancyrouter.management.NodeManager;
+import gt.redundancyrouter.management.ProviderManager;
+import gt.redundancyrouter.management.TemplateManager;
 import gt.redundancyrouter.management.chef.ChefNodeManager;
-import gt.redundancyrouter.resources.NodeManager;
-import gt.redundancyrouter.resources.credentials.LoginCredentialsManager;
-import gt.redundancyrouter.resources.credentials.PrivateKeyManager;
-import gt.redundancyrouter.resources.provider.ProviderManager;
-import gt.redundancyrouter.resources.template.TemplateManager;
+import gt.redundancyrouter.management.credentials.LoginCredentialsManager;
+import gt.redundancyrouter.management.credentials.PrivateKeyManager;
 
 public class ManagerFabric {
 

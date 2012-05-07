@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources.provider;
+package gt.redundancyrouter.management;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,10 @@ import javax.xml.bind.JAXBException;
 import org.jdom2.JDOMException;
 
 import gt.redundancyrouter.BasicManager;
+import gt.redundancyrouter.resources.provider.AbstractProvider;
+import gt.redundancyrouter.resources.provider.CustomProvider;
+import gt.redundancyrouter.resources.provider.JCloudProvider;
+import gt.redundancyrouter.resources.provider.Provider1u1;
 
 public class ProviderManager extends BasicManager<AbstractProvider> {
 
@@ -52,7 +56,7 @@ public class ProviderManager extends BasicManager<AbstractProvider> {
 
 		JAXBContext jaxbContext = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(CustomProvider.class,JCloudProvider.class);
+			jaxbContext = JAXBContext.newInstance(Provider1u1.class,JCloudProvider.class);
 
 			for (String xml : childStrings) {
 				final AbstractProvider prov = (AbstractProvider) jaxbContext

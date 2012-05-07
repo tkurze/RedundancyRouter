@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources.iaas.compute;
+package gt.redundancyrouter.management;
 
 //import org.jclouds.compute.ComputeService;
 //import org.jclouds.compute.ComputeServiceContext;
@@ -21,6 +21,7 @@ import org.jclouds.compute.domain.TemplateBuilder;
 import gt.redundancyrouter.resources.AbstractResource;
 import gt.redundancyrouter.resources.ResourceFabric;
 import gt.redundancyrouter.resources.credentials.ProviderCredentials;
+import gt.redundancyrouter.resources.iaas.compute.ComputeNode;
 import gt.redundancyrouter.resources.provider.AbstractProvider;
 import gt.redundancyrouter.resources.provider.CustomProvider;
 import gt.redundancyrouter.resources.provider.JCloudProvider;

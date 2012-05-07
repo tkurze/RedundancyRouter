@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources;
+package gt.redundancyrouter.management;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jdom2.JDOMException;
 
 import gt.redundancyrouter.BasicManager;
+import gt.redundancyrouter.resources.ResourceFabric;
 import gt.redundancyrouter.resources.ResourceFabric.ResourceFabricException;
 import gt.redundancyrouter.resources.credentials.PrivateKey;
 import gt.redundancyrouter.resources.iaas.Node;

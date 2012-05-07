@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources.template;
+package gt.redundancyrouter.management.credentials;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,32 +13,35 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom2.JDOMException;
 
 import gt.redundancyrouter.BasicManager;
+import gt.redundancyrouter.dataService.serialization.xml.SaveXmlToFile;
 import gt.redundancyrouter.resources.credentials.PrivateKey;
 
 @XmlRootElement
-public class TemplateManager extends BasicManager<AbstractTemplate> {
+public class PrivateKeyManager extends BasicManager<PrivateKey> {
 
-	protected static TemplateManager theTemplateManager = null;
+	protected static PrivateKeyManager thePrivateKeyManager = null;
 
-	public static synchronized void setTemplateManager(
-			TemplateManager templateManager) {
-		TemplateManager.theTemplateManager = templateManager;
+	public static synchronized void setPrivateKeyManager(
+			PrivateKeyManager privateKeyManager) {
+		PrivateKeyManager.thePrivateKeyManager = privateKeyManager;
 	}
 
-	public static synchronized TemplateManager getTemplateManager(String name) {
-		if (TemplateManager.theTemplateManager == null)
-			TemplateManager.theTemplateManager = new TemplateManager(name);
-		return TemplateManager.theTemplateManager;
+	public static synchronized PrivateKeyManager getPrivateKeyManager(
+			String name) {
+		if (PrivateKeyManager.thePrivateKeyManager == null)
+			PrivateKeyManager.thePrivateKeyManager = new PrivateKeyManager(name);
+		return PrivateKeyManager.thePrivateKeyManager;
 	}
 
-	protected TemplateManager(){
+	protected PrivateKeyManager() {
 		super(null);
 	}
-	
-	public TemplateManager(String name) {
+
+	public PrivateKeyManager(String name) {
 		super(name);
 	}
 
@@ -60,12 +63,12 @@ public class TemplateManager extends BasicManager<AbstractTemplate> {
 
 		JAXBContext jaxbContext = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(ComputeTemplate.class);
+			jaxbContext = JAXBContext.newInstance(PrivateKey.class);
 
 			for (String xml : childStrings) {
-				final AbstractTemplate templ = (AbstractTemplate) jaxbContext
+				final PrivateKey key = (PrivateKey) jaxbContext
 						.createUnmarshaller().unmarshal(new StringReader(xml));
-				this.addManagedObject(templ);
+				this.addManagedObject(key);
 			}
 
 		} catch (JAXBException e) {

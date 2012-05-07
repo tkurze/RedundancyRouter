@@ -1,4 +1,4 @@
-package gt.redundancyrouter.resources.credentials;
+package gt.redundancyrouter.management;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,34 +13,34 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom2.JDOMException;
 
 import gt.redundancyrouter.BasicManager;
-import gt.redundancyrouter.dataService.serialization.xml.SaveXmlToFile;
+import gt.redundancyrouter.resources.credentials.PrivateKey;
+import gt.redundancyrouter.resources.template.AbstractTemplate;
+import gt.redundancyrouter.resources.template.ComputeTemplate;
 
 @XmlRootElement
-public class PrivateKeyManager extends BasicManager<PrivateKey> {
+public class TemplateManager extends BasicManager<AbstractTemplate> {
 
-	protected static PrivateKeyManager thePrivateKeyManager = null;
+	protected static TemplateManager theTemplateManager = null;
 
-	public static synchronized void setPrivateKeyManager(
-			PrivateKeyManager privateKeyManager) {
-		PrivateKeyManager.thePrivateKeyManager = privateKeyManager;
+	public static synchronized void setTemplateManager(
+			TemplateManager templateManager) {
+		TemplateManager.theTemplateManager = templateManager;
 	}
 
-	public static synchronized PrivateKeyManager getPrivateKeyManager(
-			String name) {
-		if (PrivateKeyManager.thePrivateKeyManager == null)
-			PrivateKeyManager.thePrivateKeyManager = new PrivateKeyManager(name);
-		return PrivateKeyManager.thePrivateKeyManager;
+	public static synchronized TemplateManager getTemplateManager(String name) {
+		if (TemplateManager.theTemplateManager == null)
+			TemplateManager.theTemplateManager = new TemplateManager(name);
+		return TemplateManager.theTemplateManager;
 	}
 
-	protected PrivateKeyManager() {
+	protected TemplateManager(){
 		super(null);
 	}
-
-	public PrivateKeyManager(String name) {
+	
+	public TemplateManager(String name) {
 		super(name);
 	}
 
@@ -62,12 +62,12 @@ public class PrivateKeyManager extends BasicManager<PrivateKey> {
 
 		JAXBContext jaxbContext = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(PrivateKey.class);
+			jaxbContext = JAXBContext.newInstance(ComputeTemplate.class);
 
 			for (String xml : childStrings) {
-				final PrivateKey key = (PrivateKey) jaxbContext
+				final AbstractTemplate templ = (AbstractTemplate) jaxbContext
 						.createUnmarshaller().unmarshal(new StringReader(xml));
-				this.addManagedObject(key);
+				this.addManagedObject(templ);
 			}
 
 		} catch (JAXBException e) {

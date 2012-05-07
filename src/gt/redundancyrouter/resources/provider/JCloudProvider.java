@@ -1,6 +1,7 @@
 package gt.redundancyrouter.resources.provider;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class JCloudProvider extends AbstractProvider {
 
+	@XmlElement
 	private final String jCloudProviderString;
 
 	public static final JCloudProvider getAwsEc2Provider(String name) {
@@ -59,11 +61,5 @@ public class JCloudProvider extends AbstractProvider {
 	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public String serializeXML() throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
