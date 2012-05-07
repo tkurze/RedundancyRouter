@@ -1,7 +1,7 @@
 package gt.redundancyrouter.dataService;
 
-import gt.redundancyrouter.dataService.resources.credentials.ProviderCredentials;
-import gt.redundancyrouter.dataService.resources.provider.CustomProvider;
+import gt.redundancyrouter.resources.credentials.ProviderCredentials;
+import gt.redundancyrouter.resources.provider.CustomProvider;
 
 import java.util.List;
 

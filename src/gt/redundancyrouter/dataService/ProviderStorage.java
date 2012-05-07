@@ -1,6 +1,6 @@
 package gt.redundancyrouter.dataService;
 
-import gt.redundancyrouter.dataService.resources.provider.CustomProvider;
+import gt.redundancyrouter.resources.provider.CustomProvider;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
 package gt.redundancyrouter;
 
-import gt.redundancyrouter.resourceMgmt.Resource;
+import gt.redundancyrouter.resources.Resource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -70,6 +71,12 @@ public abstract class BasicManager<T extends Resource> implements Manager,
 	public Collection<T> getManagedObjects() {
 		return this.managededObjects.values();
 	}
+	
+	public void printManagedObjects(PrintStream s){
+		for(String k : this.managededObjects.keySet()){
+			s.print(k+", ");
+		}
+	}
 
 	protected List<String> getXmlChildStrings(File f) throws JDOMException,
 			IOException {
@@ -95,8 +102,6 @@ public abstract class BasicManager<T extends Resource> implements Manager,
 	public String getName() {
 		return this.name;
 	}
-
-
 
 	@Override
 	public void saveConfig(File f) {

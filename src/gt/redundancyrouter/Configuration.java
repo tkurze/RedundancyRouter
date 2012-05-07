@@ -28,7 +28,7 @@ public class Configuration {
 
 	protected final String name;
 
-	public static synchronized Configuration getConfigurationManager()
+	public static synchronized Configuration getConfiguration()
 			throws ConfigurationManagerException {
 		if (Configuration.theConfigurationManager == null)
 			Configuration.theConfigurationManager = new Configuration(
@@ -124,7 +124,7 @@ public class Configuration {
 	public static void main(String[] args) {
 		try {
 			Configuration config = Configuration
-					.getConfigurationManager();
+					.getConfiguration();
 
 			System.out.println(config
 					.getManagerConfigurationsDirectoryProperty());
